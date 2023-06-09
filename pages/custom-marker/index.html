@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Marker</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    <script src="/ARWebDemo/scripts/aframe-ar.js"></script>
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script async type="module" crossorigin src="/ARWebDemo/assets/custom-marker-28788956.js"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      embedded
+      renderer="antialias: true; alpha: true; precision: high;"
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false;"
+      arjs="sourceType: webcam; maxDetectionRate: 60; detectionMode: mono;"
+      stats
+      style="height: 100%; width: 100%"
+    >
+      <a-assets>
+        <a-asset-item id="avocado" src="/ARWebDemo/assets/models/Avocado.glb"></a-asset-item>
+      </a-assets>
+
+      <a-marker type="pattern" url="/ARWebDemo/assets/markers/avocado.patt">
+        <a-entity position="0 1 0" gltf-model="#avocado" scale="20 20 20" rotation="-45 90 0"></a-entity>
+        <a-box position="0 0.25 0" material="opacity: 0.5;" scale="0.5 0.5 0.5"></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/custom-marker-legacy-518b8698.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hover Videos</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    
+    <script type="module" crossorigin src="/ARWebDemo/assets/hover-videos-062de336.js"></script>
+    <link rel="modulepreload" crossorigin href="/ARWebDemo/assets/modulepreload-polyfill-3cfb730f.js">
+    <link rel="modulepreload" crossorigin href="/ARWebDemo/assets/video-530294de.js">
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene>
+      <a-assets>
+        <video
+          id="avocado-video"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="/ARWebDemo/assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+        <video
+          id="avocado-video2"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="/ARWebDemo/assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+        <video
+          id="avocado-video3"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="/ARWebDemo/assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+      </a-assets>
+
+      <a-playback-video src="#avocado-video" position="0 0 -20" rotation="0 0 0"></a-playback-video>
+      <a-playback-video src="#avocado-video2" position="20 3 -20" rotation="0 -35 0"></a-playback-video>
+      <a-playback-video
+        src="#avocado-video3"
+        position="0 1.6 0"
+        curved="true"
+        radius="8"
+        theta-start="210"
+      ></a-playback-video>
+      <a-entity camera look-controls wasd-controls position="0 1.6 0">
+        <a-cursor
+          id="cursor"
+          color="white"
+          rayOrigin="mouse"
+          raycaster="objects: .clickable"
+          w
+          fuseTimeout="500"
+          animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+        ></a-cursor>
+      </a-entity>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/hover-videos-legacy-b2f0bb8c.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>

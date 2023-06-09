@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Sphere</title>
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script async type="module" crossorigin src="/ARWebDemo/assets/photo-sphere-28788956.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="panorama" src="/ARWebDemo/assets/pano/snow.jpg" />
+      </a-assets>
+      <a-videosphere src="#panorama"></a-videosphere>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/photo-sphere-legacy-518b8698.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Multi Video</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    <script src="/ARWebDemo/scripts/aframe-ar.js"></script>
+    <script src="/ARWebDemo/scripts/aframe-troika-text.min.js"></script>
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script>
+      AFRAME.registerComponent("play-on-click", {
+        init: function () {
+          this.onClick = this.onClick.bind(this);
+        },
+        play: function () {
+          window.addEventListener("click", this.onClick);
+        },
+        pause: function () {
+          window.removeEventListener("click", this.onClick);
+        },
+        onClick: function (evt) {
+          var videoEl = this.el.getAttribute("material").src;
+          if (!videoEl) {
+            return;
+          }
+          this.el.object3D.visible = true;
+          videoEl.play();
+        },
+      });
+
+      AFRAME.registerComponent("hide-on-play", {
+        schema: {
+          type: "selector",
+        },
+        init: function () {
+          this.onPlaying = this.onPlaying.bind(this);
+          this.onPause = this.onPause.bind(this);
+          this.el.object3D.visible = !this.data.playing;
+        },
+        play: function () {
+          if (this.data) {
+            this.data.addEventListener("playing", this.onPlaying);
+            this.data.addEventListener("pause", this.onPause);
+          }
+        },
+        pause: function () {
+          if (this.data) {
+            this.data.removeEventListener("playing", this.onPlaying);
+            this.data.removeEventListener("pause", this.onPause);
+          }
+        },
+        onPlaying: function (evt) {
+          this.el.object3D.visible = false;
+        },
+        onPause: function (evt) {
+          this.el.object3D.visible = true;
+        },
+      });
+
+      AFRAME.registerComponent("cursor-listener", {
+        init: function () {
+          var lastIndex = -1;
+          var COLORS = ["red", "green", "blue"];
+          this.el.addEventListener("click", function (evt) {
+            lastIndex = (lastIndex + 1) % COLORS.length;
+            this.setAttribute("material", "color", COLORS[lastIndex]);
+            console.log("I was clicked at: ", evt.detail.intersection.point);
+          });
+        },
+      });
+    </script>
+    <script async type="module" crossorigin src="/ARWebDemo/assets/cursor-28788956.js"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      embedded
+      renderer="antialias: true; precision: high;"
+      loading-screen="enabled: false;"
+      stats
+      style="height: 100%; width: 100%"
+    >
+      <a-sky color="#706161"></a-sky>
+
+      <!-- <a-scene
+      embedded
+      renderer="antialias: true; alpha: true; precision: high;"
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false;"
+      arjs="sourceType: webcam; maxDetectionRate: 60; detectionMode: mono;"
+      stats
+      style="height: 100%; width: 100%"
+    > -->
+      <a-assets>
+        <video
+          id="avocado-video"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="/ARWebDemo/assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+      </a-assets>
+
+      <!-- <a-entity
+        material="shader: flat; src: #avocado-video"
+        geometry="primitive: plane; width: 160; height: 90;"
+        position="0 60 -250"
+        rotation="0 35 0"
+        play-on-click
+        visible="false"
+      >
+      </a-entity>
+
+      <a-entity
+        material="shader: flat; src: #avocado-video"
+        geometry="primitive: plane; width: 160; height: 90"
+        position="0 -60 -200"
+        rotation="0 -35 0"
+        play-on-click
+        visible="false"
+      >
+      </a-entity> -->
+      <a-entity id="box" position="0 -5 0" cursor-listener geometry="primitive: box" material="color: blue"></a-entity>
+
+      <!-- <a-entity position="0 0 0" hide-on-play="#avocado-video">
+        <a-entity
+          position="0 0 -2"
+          troika-text="
+          align: center;
+          color: white;
+          outline-color: black;
+          outline-width: 0.01;
+          font: /ARWebDemo/Raleway/static/Raleway-Bold.ttf;
+          letter-spacing: 0.5;
+          value: CLICK TO START;"
+        ></a-entity>
+      </a-entity> -->
+      <a-entity camera look-controls>
+        <a-entity
+          cursor="fuse: true; fuseTimeout: 500"
+          position="0 0 -3"
+          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+          material="color: white; shader: flat"
+        >
+        </a-entity>
+      </a-entity>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/cursor-legacy-518b8698.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>

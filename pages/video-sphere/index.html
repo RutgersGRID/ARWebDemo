@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Sphere</title>
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    
+    
+    <script type="module" crossorigin src="/ARWebDemo/assets/video-sphere-2bd80b30.js"></script>
+    <link rel="modulepreload" crossorigin href="/ARWebDemo/assets/modulepreload-polyfill-3cfb730f.js">
+    <link rel="modulepreload" crossorigin href="/ARWebDemo/assets/style-video-controls-73c0acf2.js">
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <video id="video-sphere" loop="true" src="/ARWebDemo/assets/pano/smaller.mp4" webkit-playsinline></video>e
+      </a-assets>
+
+      <a-camera position="0 1.6 0" wasd-controls-enabled="false">
+        <a-cursor id="cursor" color="white"></a-cursor>
+      </a-camera>
+      <a-videosphere src="#video-sphere"></a-videosphere>
+      <a-entity video-controls="src:#video-sphere; distance:1"></a-entity>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/video-sphere-legacy-697235c8.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Geolocation</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="/ARWebDemo/scripts/aframe.min.js"></script>
+    <script src="/ARWebDemo/scripts/ar-threex-location-only.js"></script>
+    <script src="/ARWebDemo/scripts/aframe-ar.js"></script>
+    <script src="/ARWebDemo/scripts/showdown.min.js"></script>
+    <link rel="stylesheet" href="/ARWebDemo/styles.css" />
+    <script>
+      function getGPSString(vector2) {
+        return `latitude:${vector2.x}; longitude:${vector2.y}`;
+      }
+
+      // Settings
+      const usePrompt = true;
+      const pointArrow = true;
+      const lerpAvocado = false;
+
+      if (lerpAvocado)
+        // Disable avocado lerping
+        AFRAME.registerSystem("lerp-avocado", {
+          init: function () {
+            this.avocado = document.querySelector("#avocado-entity");
+            this.avocadoLerpTime = 10 * 1000;
+            this.avocadoStartPos = new THREE.Vector3(-10, 0, 0);
+            this.avocadoEndPos = new THREE.Vector3(10, 0, -5);
+            this.intervalDuration = 10;
+          },
+          tick: function (time, timeDelta) {
+            const lerpedPosition = this.avocadoStartPos.clone();
+            lerpedPosition.lerp(this.avocadoEndPos, (time % this.avocadoLerpTime) / this.avocadoLerpTime);
+            this.avocado.object3D.position.copy(lerpedPosition);
+            time += this.intervalDuration;
+          },
+        });
+
+      if (pointArrow)
+        AFRAME.registerSystem("arrow-pointer", {
+          init: function () {
+            this.avocado = document.querySelector("#avocado-entity");
+            this.arrow = document.querySelector("#arrow-entity");
+            this.camera = document.querySelector("#camera");
+          },
+          tick: function (time, timeDelta) {
+            const avocadoPos2D = new THREE.Vector2(this.avocado.object3D.position.x, this.avocado.object3D.position.z);
+
+            const cameraPos2D = new THREE.Vector2(this.camera.object3D.position.x, this.camera.object3D.position.z);
+            const direction2D = new THREE.Vector2();
+            direction2D.subVectors(avocadoPos2D, cameraPos2D).normalize();
+            const offset = 2;
+            const arrowPos2D = new THREE.Vector2();
+            arrowPos2D.addVectors(cameraPos2D, direction2D.clone().multiplyScalar(offset));
+            const arrowRotationRad = Math.atan2(direction2D.x, direction2D.y) + Math.PI;
+            this.arrow.object3D.position.set(arrowPos2D.x, 1, arrowPos2D.y);
+            this.arrow.object3D.rotation.set(0, arrowRotationRad, 0);
+          },
+        });
+
+      AFRAME.registerSystem("debug", {
+        init: function () {
+          this.debugElem = document.querySelector("#debug");
+          this.avocado = document.querySelector("#avocado-entity");
+          this.arrow = document.querySelector("#arrow-entity");
+          this.camera = document.querySelector("#camera");
+
+          let location = null;
+          if (usePrompt) location = prompt("Enter Coordinates: (Cancel for default LLC coordinates)");
+          if (location == null) location = "40.47787321121269, -74.42559212972574";
+
+          let token = location.split(", ");
+          this.targetPos = new THREE.Vector2(token[0], token[1]);
+          this.geoPos = new THREE.Vector2(0, 0);
+
+          // Deferred init
+          document.querySelector("a-scene").addEventListener("loaded", () => {
+            this.avocado.setAttribute("gps-new-entity-place", getGPSString(this.targetPos));
+            const gpsNewEntityPlace = this.avocado.components["gps-new-entity-place"];
+            gpsNewEntityPlace.update();
+          });
+
+          this.converter = new showdown.Converter();
+          if (navigator.geolocation) {
+            // Updating the geolocation
+            navigator.geolocation.watchPosition((position) => {
+              this.geoPos = new THREE.Vector2(position.coords.latitude, position.coords.longitude);
+            });
+          } else {
+            this.debugElem.innerHTML = "Geolocation is not supported.";
+          }
+        },
+
+        tick: function (time, timeDelta) {
+          if (navigator.geolocation) {
+            // Main arrow/debug info update loop
+            const geoDist = this.targetPos.distanceTo(this.geoPos);
+            const lat2meters = 111 * 1000;
+            const distMeters = geoDist * lat2meters;
+
+            const debugMarkDown = `
+            \n**current:** lat: ${this.geoPos.x} long: ${this.geoPos.y}
+            \n**target:** lat: ${this.targetPos.x}; long: ${this.targetPos.y}
+            \n**distance:** ${distMeters.toFixed(2)} meters
+            \n**arrow pos:** ${this._displayLocalPos(this.arrow.object3D.position)}
+            \n**camera pos:** ${this._displayLocalPos(this.camera.object3D.position)}
+            \n**avocado pos:** ${this._displayLocalPos(this.avocado.object3D.position)}
+            \n**arrow rot:** ${this.arrow.object3D.rotation.y} rad, ${THREE.MathUtils.radToDeg(
+              this.arrow.object3D.rotation.y
+            )} deg`;
+
+            this.debugElem.innerHTML = this.converter.makeHtml(debugMarkDown);
+          }
+        },
+
+        _displayLocalPos(vector2) {
+          return `x:${vector2.x.toFixed(2)} y: ${vector2.y.toFixed(2)} z:${vector2.z.toFixed(2)}`;
+        },
+      });
+    </script>
+    <script async type="module" crossorigin src="/ARWebDemo/assets/arrow-geolocation-28788956.js"></script>
+  </head>
+  <div
+    style="
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2em;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <span style="margin: 0; font-size: 0.8em" id="debug"></span>
+  </div>
+  <body style="margin: 0; overflow: hidden">
+    <a-scene
+      renderer="logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      loading-screen="enabled: false;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-camera id="camera" gps-new-camera="gpsMinDistance: 5" rotation-reader></a-camera>
+
+      <a-assets>
+        <a-asset-item id="avocado" src="/ARWebDemo/assets/models/Avocado.glb"></a-asset-item>
+        <a-asset-item id="arrow" src="/ARWebDemo/assets/models/arrow.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity id="avocado-entity" gltf-model="#avocado" scale="40 40 40"></a-entity>
+      <a-entity gltf-model="#arrow" scale="0.25 0.25 0.25" id="arrow-entity"></a-entity>
+    </a-scene>
+    <a href="/ARWebDemo/" class="linkButton backButton">⬅️ Back</a>
+    <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+    <script nomodule crossorigin id="vite-legacy-entry" data-src="/ARWebDemo/assets/arrow-geolocation-legacy-518b8698.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+  </body>
+</html>
