@@ -1,10 +1,10 @@
-# Lambertville XR
+# Augmented Reality Demos
 
-Augmented reality site for Lambertville XR.
+Hosting AR experiences using AR.js and A-Frame.
 
 ## Structure
 
-Each page has a folder and has an index.html inside of its folder. The pages folder contains all of the page folders. We use Vite to build the site and host a local server, and we use GitHub Actions to automatically deploy the site to GitHub pages. We also use AFrame and ARjs to make the AR content in the website.
+Each page has a folder and has an index.html inside of its folder. The pages folder contains all of the page folders. We use Vite to build the site and host a local server, and we use GitHub Actions to automatically deploy the site to GitHub pages. AFrame and AR.js are used to make the AR content in the website.
 
 ## Development
 
