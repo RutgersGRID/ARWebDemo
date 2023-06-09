@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Positional Audio</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <script type="module" src="/src/video-controls.ts"></script>
+    <script type="module" src="/src/style-video-controls.ts"></script>
+    <script type="module" src="/src/hover-update-video-controls.ts"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene>
+      <a-assets>
+        <video
+          id="trashvideo"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="%BASE_URL%assets/videos/trash-video.mp4"
+          crossorigin="anonymous"
+        ></video>
+        <img id="panorama" src="%BASE_URL%assets/pano/snow.jpg" />
+      </a-assets>
+      <a-entity
+        video
+        material="shader: flat; src: #trashvideo"
+        geometry="primitive: plane; width: 16; height: 9"
+        position="0 0 -20"
+        rotation="0 0 0"
+      >
+      </a-entity>
+      <a-sky src="#panorama"></a-sky>
+      <a-entity wasd-controls>
+        <a-entity camera look-controls position="0 1.6 0">
+          <a-cursor id="cursor" color="white" rayOrigin="mouse"></a-cursor>
+        </a-entity>
+        <a-entity video-controls="src:#trashvideo; distance:1"></a-entity>
+      </a-entity>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

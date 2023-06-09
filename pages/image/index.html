@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Image</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="%BASE_URL%scripts/showdown.min.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      AFRAME.registerSystem("debug", {
+        init: function () {
+          document.querySelector("a-scene").addEventListener("loaded", (event) => {
+            this.debugElem = document.querySelector("#debug");
+            this.avocado = document.querySelector("#avocado-entity");
+            this.camera = document.querySelector("#camera");
+            this.converter = new showdown.Converter();
+          });
+        },
+        tick: function (time, timeDelta) {
+          if (this.avocado) {
+            const avocadoWorldPos = new THREE.Vector3();
+            this.avocado.object3D.getWorldPosition(avocadoWorldPos);
+            const cameraWorldPos = new THREE.Vector3();
+            this.camera.object3D.getWorldPosition(cameraWorldPos);
+            const debugMarkDown = `
+              **current avocado:**: ${this._displayVector3(avocadoWorldPos)}\n
+              **current-camera**: ${this._displayVector3(cameraWorldPos)}\n
+              **distance**: ${avocadoWorldPos.distanceTo(cameraWorldPos)}
+              `;
+            this.debugElem.innerHTML = this.converter.makeHtml(debugMarkDown);
+          }
+        },
+        _displayVector3(vector3) {
+          return `x:${vector3.x.toFixed(2)} y: ${vector3.y.toFixed(2)} z:${vector3.z.toFixed(2)}`;
+        },
+      });
+    </script>
+  </head>
+  <div
+    style="
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2em;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <span style="margin: 0; font-size: 0.8em" id="debug"></span>
+  </div>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      embedded
+      renderer="antialias: true; alpha: true; precision: high;"
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false;"
+      arjs="sourceType: webcam; maxDetectionRate: 60; detectionMode: mono;"
+      style="height: 100%; width: 100%"
+    >
+      <a-assets>
+        <a-asset-item id="avocado" src="%BASE_URL%assets/models/Avocado.glb"></a-asset-item>
+      </a-assets>
+
+      <a-nft
+        type="nft"
+        url="%BASE_URL%assets/nfts/pattern-qr-code"
+        smooth="true"
+        smoothCount="10"
+        smoothTolerance=".01"
+        smoothThreshold="5"
+      >
+        <a-entity scale="100 100 100">
+          <a-entity
+            position="0 0 0"
+            gltf-model="#avocado"
+            scale="20 20 20"
+            rotation="-45 90 0"
+            id="avocado-entity"
+          ></a-entity>
+          <a-box position="0 0.25 0" material="opacity: 0.5;" scale="0.5 0.5 0.5"></a-box>
+        </a-entity>
+      </a-nft>
+      <a-entity camera id="camera"></a-entity>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

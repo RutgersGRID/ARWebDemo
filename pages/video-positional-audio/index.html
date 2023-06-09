@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video with Positional Audio</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <script type="module" src="/src/video.ts"></script>
+    <script>
+      window.addEventListener("load", function () {
+        let playvideo = document.querySelector("#playbutton").addEventListener("click", function () {
+          DeviceMotionEvent.requestPermission().then((permissionState) => {
+            if (permissionState === "granted") {
+              window.addEventListener("devicemotion", () => {});
+            }
+          });
+          var vid = document.querySelector("#trash-video");
+          vid.muted = false;
+          vid.play();
+        });
+      });
+    </script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <video
+          id="trash-video"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          loop="true"
+          src="%BASE_URL%assets/videos/trash-video.mp4"
+          crossorigin="anonymous"
+        ></video>
+        <img id="panorama" src="%BASE_URL%assets/pano/snow.jpg" />
+      </a-assets>
+      <a-sky src="#panorama"></a-sky>
+      <a-playback-video src="#trash-video" position="0 0 -20" rotation="0 0 0"></a-playback-video>
+      <a-entity camera look-controls wasd-controls position="0 1.6 0">
+        <a-cursor
+          id="cursor"
+          color="white"
+          rayOrigin="mouse"
+          raycaster="objects: .clickable"
+          w
+          fuseTimeout="500"
+          animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+          animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+        ></a-cursor>
+      </a-entity>
+    </a-scene>
+    <button id="playbutton" style="position: absolute; top: 1em; left: 1em" class="linkButton">Play Video</button>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

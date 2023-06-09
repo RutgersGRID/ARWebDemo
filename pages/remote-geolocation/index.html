@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Remote Geolocation</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <script src="%BASE_URL%scripts/aframe-ar.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      function getGPSString(latitude, longitude) {
+        return `latitude:${latitude}; longitude:${longitude}`;
+        return cord;
+      }
+      window.addEventListener("load", (event) => {
+        var time = prompt("Enter Coordinates");
+        let token = time.split(", ");
+        var latitude = token[0];
+        var longitude = token[1];
+        var gpsentity = document.querySelector("#gpsentity");
+        gpsentity.setAttribute("gps-entity-place", getGPSString(latitude, longitude));
+        var debugElem = document.querySelector("#debug");
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition((position) => {
+            const geoPos = {
+              x: position.coords.latitude,
+              y: position.coords.longitude,
+            };
+            const targetPos = {
+              x: latitude,
+              y: longitude,
+            };
+            const dist = Math.sqrt(Math.pow(geoPos.x - targetPos.x, 2), Math.pow(geoPos.y - targetPos.y, 2));
+            const distKilometers = dist * 111;
+            const distMeters = distKilometers * 1000;
+            debugElem.innerHTML = `<b>current:</b> lat: ${geoPos.x} long: ${geoPos.y}<br><b>target:</b> lat: ${
+              targetPos.x
+            }; long: ${targetPos.y}<br><b>distance:</b> ${distMeters.toFixed(2)} meters`;
+          });
+        } else {
+          debugElem.innerHTML = "Geolocation is not supported.";
+        }
+      });
+    </script>
+  </head>
+  <div
+    style="
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2em;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <span style="margin: 0; font-size: 1.5em" id="debug"></span>
+  </div>
+  <body style="margin: 0; overflow: hidden">
+    <a-scene
+      renderer="logarithmicDepthBuffer: true;"
+      embedded
+      loading-screen="enabled: false;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-assets>
+        <a-asset-item id="avocado" src="%BASE_URL%assets/models/Avocado.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity look-at="[gps-camera]" gltf-model="#avocado" scale="20 20 20" id="gpsentity"></a-entity>
+
+      <a-camera gps-camera rotation-reader></a-camera>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

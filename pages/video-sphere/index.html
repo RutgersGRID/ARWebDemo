@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Sphere</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <script type="module" src="/src/video-controls.ts"></script>
+    <script type="module" src="/src/style-video-controls.ts"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <video id="video-sphere" loop="true" src="%BASE_URL%assets/pano/smaller.mp4" webkit-playsinline></video>e
+      </a-assets>
+
+      <a-camera position="0 1.6 0" wasd-controls-enabled="false">
+        <a-cursor id="cursor" color="white"></a-cursor>
+      </a-camera>
+      <a-videosphere src="#video-sphere"></a-videosphere>
+      <a-entity video-controls="src:#video-sphere; distance:1"></a-entity>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

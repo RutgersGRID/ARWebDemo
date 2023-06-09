@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Marker Slideshow</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var images = ["#image1", "#image2", "#image3"];
+        var currentImageIndex = 0;
+        var slideshowElement = document.getElementById("slideshow");
+
+        function showNextImage() {
+          currentImageIndex = (currentImageIndex + 1) % images.length;
+          slideshowElement.setAttribute("src", images[currentImageIndex]);
+        }
+
+        setInterval(showNextImage, 2000);
+      });
+    </script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene>
+      <a-assets>
+        <img id="image1" src="%BASE_URL%assets/images/image1.jpg" />
+        <img id="image2" src="%BASE_URL%assets/images/image2.jpg" />
+        <img id="image3" src="%BASE_URL%assets/images/image3.jpg" />
+      </a-assets>
+
+      <a-image id="slideshow" src="#image1" scale="2 2 2" position="0 0 -3"></a-image>
+      <a-entity camera look-controls wasd-controls></a-entity>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

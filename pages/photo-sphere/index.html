@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Sphere</title>
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="panorama" src="%BASE_URL%assets/pano/snow.jpg" />
+      </a-assets>
+      <a-videosphere src="#panorama"></a-videosphere>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>

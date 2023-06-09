@@ -1,0 +1,21 @@
+{
+  "name": "lambertville-xr",
+  "scripts": {
+    "build": "vite build",
+    "start": "vite --force --host --port 4225",
+    "start:live": "concurrently --names 'vite,localtunnel' --prefix-colors 'green,yellow' --kill-others-on-fail \"npm start -- \" \"lt --port 4225\"",
+    "ngrok": "ngrok http 4225"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.5",
+    "@vitejs/plugin-legacy": "^4.0.3",
+    "concurrently": "^8.0.1",
+    "localtunnel": "^2.0.2",
+    "vite": "^4.3.5"
+  },
+  "dependencies": {
+    "@types/aframe": "^1.2.2",
+    "@types/three": "^0.152.1",
+    "aframe": "^1.4.2"
+  }
+}

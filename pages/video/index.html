@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="%BASE_URL%scripts/aframe.min.js"></script>
+    <script type="module" src="/src/video-controls.ts"></script>
+    <script type="module" src="/src/style-video-controls.ts"></script>
+    <script type="module" src="/src/hover-update-video-controls.ts"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene>
+      <a-assets>
+        <video
+          id="avocado-video"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="%BASE_URL%assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+        <video
+          id="avocado-video2"
+          preload="auto"
+          width="160"
+          height="90"
+          autoplay
+          muted
+          loop="true"
+          src="%BASE_URL%assets/videos/avocado.mp4"
+          crossorigin="anonymous"
+        ></video>
+      </a-assets>
+
+      <a-entity
+        video
+        material="shader: flat; src: #avocado-video"
+        geometry="primitive: plane; width: 16; height: 9;"
+        position="0 6 -25"
+        rotation="0 35 0"
+      >
+      </a-entity>
+
+      <a-entity
+        video
+        material="shader: flat; src: #avocado-video2"
+        geometry="primitive: plane; width: 16; height: 9"
+        position="20 6 -20"
+        rotation="0 -35 0"
+      >
+      </a-entity>
+      <a-entity wasd-controls>
+        <a-entity camera look-controls position="0 1.6 0">
+          <a-cursor id="cursor" color="white" rayOrigin="mouse"></a-cursor>
+        </a-entity>
+        <a-entity video-controls="src:#avocado-video; distance:1"></a-entity>
+      </a-entity>
+    </a-scene>
+    <a href="%BASE_URL%" class="linkButton backButton">⬅️ Back</a>
+  </body>
+</html>
